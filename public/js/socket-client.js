@@ -8,21 +8,23 @@ const btnEnviar = document.querySelector('#btnEnviar');
 const socket = io();
 
 socket.on('connect', () => {
-    console.log('Conectado al servidor.')
-
     lbOffline.style.display = 'none';
     lbOnline.style.display = '';
 });
 
 socket.on('disconnect', () => {
-    console.log('Desconectado de servidor.');
-
     lbOffline.style.display = '';
     lbOnline.style.display = 'none';
+});
+
+socket.on('enviar-mensaje', ( payload ) => {
+    console.log(payload)
 });
 
 btnEnviar.addEventListener( 'click', () => {
     const msg = txtMensaje.value;
     
-    socket.emit( 'enviar-mensaje', msg );
+    socket.emit( 'enviar-mensaje', msg, (id) => {
+        console.log('Desde el server', id)
+    } );
 } );
